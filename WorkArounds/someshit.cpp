@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+bool check(string s)
+{
+  if(s.length()>2)
+    for(int i = 0;i<s.length()-2;i++)
+    {
+      if((s[i+1]-s[i])==(s[i+2]-s[i+1]) || (s[i]==s[i+1] && s[i+1]==s[i+2]))
+        return false;
+    }
+  return true;
+}
+
+int main()
+{
+  set<string> unique;
+  set<string>::iterator it,it2,it3;
+  set<string> results,finalset;
+  set<string> considered;
+  string alpha = "ab";
+  string str="abababababababa";
+  long int count=0;
+  if(check(str))
+    count=1;
+  int distance=15;
+  finalset.insert(str);
+  unique.insert(str);
+//  cout<<str<<endl;
+  string new_str,onestring=str;
+  for ( int d=0;d<distance;d++)
+  {
+  //  cout<<"Distance : "<<d+1<<endl;
+    for(it=unique.begin();it!=unique.end();it++)
+    {
+    //  cout<<"Considering: "<<*it<<endl;
+      it3=considered.find(*it);
+      if(it3==considered.end())
+      {
+            considered.insert(*it);
+            for( int pos=0; pos< (*it).length();pos++)
+            {
+          //  cout<<pos<<" "<<(*it).length()<<endl;
+              for( int i=0;i<alpha.length();i++)
+              {
+
+                onestring=*it;
+                if(onestring[pos]!=alpha[i])
+                  {
+                    onestring[pos]=alpha[i];
+                  }
+                 it2=finalset.find(onestring);
+
+                 if(it2==finalset.end())
+                 {
+                   results.insert(onestring);
+                    if(check(onestring))
+                    {
+                //   cout<<onestring<<endl;
+                      count++;
+                      finalset.insert(onestring);
+                    }
+                 }
+               }
+           }
+       }
+   }
+   unique.clear();
+   for(it2=results.begin();it2!=results.end();it2++)
+   {
+     unique.insert(*it2);
+   }
+   results.clear();
+  }
+  cout<<count%1000000007<<endl;
+
+  return 0;
+}
